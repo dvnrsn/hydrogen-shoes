@@ -1,11 +1,12 @@
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Await, useLoaderData, Link, type MetaFunction} from '@remix-run/react';
-import {Suspense} from 'react';
+import {Suspense, useContext} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
+import {MyContext} from '~/components/context';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -24,8 +25,10 @@ export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
     <div className="home">
-      <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
+      <MyContext.Provider value={'hello'}>
+        <FeaturedCollection collection={data.featuredCollection} />
+        <RecommendedProducts products={data.recommendedProducts} />
+      </MyContext.Provider>
     </div>
   );
 }
@@ -36,6 +39,8 @@ function FeaturedCollection({
   collection: FeaturedCollectionFragment;
 }) {
   if (!collection) return null;
+  const a = useContext(MyContext);
+  console.log(a);
   const image = collection?.image;
   return (
     <Link
