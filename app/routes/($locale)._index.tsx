@@ -6,7 +6,7 @@ import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
-import {MyContext} from '~/components/context';
+import {ModuleContext} from '~/components/context';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -25,10 +25,15 @@ export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
     <div className="home">
-      <MyContext.Provider value={'hello'}>
+      <ModuleContext.Provider
+        value={{
+          pageType: 'blogPost',
+          addPortableTextModuleMargin: true,
+        }}
+      >
         <FeaturedCollection collection={data.featuredCollection} />
         <RecommendedProducts products={data.recommendedProducts} />
-      </MyContext.Provider>
+      </ModuleContext.Provider>
     </div>
   );
 }
@@ -39,7 +44,7 @@ function FeaturedCollection({
   collection: FeaturedCollectionFragment;
 }) {
   if (!collection) return null;
-  const a = useContext(MyContext);
+  const a = useContext(ModuleContext);
   console.log(a);
   const image = collection?.image;
   return (

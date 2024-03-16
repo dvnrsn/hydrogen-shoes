@@ -1,3 +1,8 @@
 import {createContext} from 'react';
 
-export const MyContext = createContext('goodbye');
+type ModuleContextType = {
+  pageType?: 'blogPost';
+  addPortableTextModuleMargin?: boolean;
+};
+
+export const ModuleContext = createContext<ModuleContextType>({});
